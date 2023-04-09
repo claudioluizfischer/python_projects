@@ -1,75 +1,56 @@
-'''
-Claudio FIscher
-U92525778
-Description: This program inputs 2 numbers from the user. It verifies if the relation to the numerador and denominator are
-outputs a proper or improper fraction. If it is proper and can be reduced, it reduces the inputed numbers and outputs
-the integer number if generated. The program also verifies if the user is inputing numbers greater than 0 and if not it
-asks the user to re-enter inputs accordingly.
-'''
+#This program prompts the user for a numerator and a denominator. It then determines
+#if the fraction is proper or improper, it it can be reduced using the gcd, and if improper,
+#converts it to a mixed number.
 
-import math
+from math import gcd
+#get numerator and denominator (and also validate input)
+number = int(input('Enter a numerator: Value must be greater than 0: '))
+while number <= 0:
+  number = int(input('Please re-enter the numerator. Value must be greater than 0: '))
 
-numerator = int(input("Enter a numerator: Value must be greater than 0:"))
-if numerator > 0:
-    denominator = int(input("Enter a denominator: Value must be greater than 0:"))
-    if denominator > 0:
-        if (numerator % 2 == 0) and (denominator % 2 == 0):
-            new_numerator = numerator / 2
-            new_denominator = denominator / 2
-        elif (numerator % 3 == 0) and (denominator % 3 == 0):
-            new_numerator = numerator / 3
-            new_denominator = denominator /3
+denom = int(input('Enter a denominator. Value must be greater than 0:'))
+while denom <=0:
+  denom = int(input('Please re-enter the denominator. Value must be greater than 0:'))
 
-        if numerator < denominator:
-            print(f"{numerator} / {denominator} is a proper fraction.")
-            print(f"This proper fraction can be reduced to {new_numerator} / {new_denominator}")
-        if (numerator % 2 == 0) and (denominator % 2 == 0):
-            new_numerator = numerator / 2
-            new_denominator = denominator / 2
-        elif (numerator % 3 == 0) and (denominator % 3 == 0):
-            new_numerator = numerator / 3
-            new_denominator = denominator /3
-        elif numerator > denominator:
-            print(f"{numerator} / {denominator} is an improper fraction.")
-            print(f"This improper fraction cannot be reduced any further.")
-        elif new_denominator == 1:
-            print(f"The whole number is {new_numerator}")
-    else:
-        denominador = int(input("Please re-enter the denominator. Value must be greater than 0:"))
-        if (numerator % 2 == 0) and (denominator % 2 == 0):
-            new_numerator = numerator / 2
-            new_denominator = denominator / 2
-        elif (numerator % 3 == 0) and (denominator % 3 == 0):
-            new_numerator = numerator / 3
-            new_denominator = denominator /3
+#calculate greatest common divisor
+factor = gcd(number, denom)
 
-        if numerator < denominator:
-            print(f"{numerator} / {denominator} is a proper fraction.")
-            print(f"This proper fraction can be reduced to {new_numerator} / {new_denominator}")
-            mix_number = math.gcd(numerator, denominator)
-            print(f"The mixed number is {mix_number} and {numerator} / {denominator}")
-        elif numerator > denominator:
-            print(f"{numerator} / {denominator} is an improper fraction.")
-            print(f"This improper fraction cannot be reduced any further.")
-            mix_number = math.gcd(numerator, denominator)
-            print(f"The mixed number is {mix_number} and {numerator} / {denominator}")
+#determine proper or improper fraction (and reduce if possible)
+if number < denom:
+# it is a proper fraction
+  print(f'{number} / {denom} is a proper fraction.')
+
+  #check for reduction
+  if (factor == 1):
+    print('This proper fraction cannot be reduced any further.')
+  else:
+    print(f'This proper fraction can be reduced to: {number // factor} / {denom / factor}')
+
+#otherwise, the fraction is improper
 else:
-    numerator = int(input("Please re-enter the numerator. Value must be greater than 0:"))
-    denominator = int(input("Enter a denominator: Value must be greater than 0:"))
-    if (numerator % 2 == 0) and (denominator % 2 == 0):
-        new_numerator = numerator / 2
-        new_denominator = denominator / 2
-    elif (numerator % 3 == 0) and (denominator % 3 == 0):
-        new_numerator = numerator / 3
-        new_denominator = denominator /3
+  print(f'{number} / {denom} is an improper fraction.')
 
-    if numerator < denominator:
-        print(f"{numerator} / {denominator} is a proper fraction.")
-        print(f"This proper fraction can be reduced to {new_numerator} / {new_denominator}")
-        mix_number = math.gcd(numerator, denominator)
-        print(f"The mixed number is {mix_number} and {numerator} / {denominator}")
-    elif numerator > denominator:
-        print(f"{numerator} / {denominator} is an improper fraction.")
-        print(f"This improper fraction cannot be reduced any further.")
-        mix_number = math.gcd(numerator, denominator)
-        print(f"The mixed number is {mix_number} and {numerator} / {denominator}")
+#check for reduction
+  if (factor == 1):
+    print('This improper fraction cannot be reduced any further.')
+
+    #calculate mixed number (if values can't be reduced)
+    wholenum = number / denom
+    frac = number % denom
+    if frac == 0:
+      print(f'The whole number is {number // denom}')
+    else:
+      print(f'The mixed number is {number // denom} and {number % denom} / {denom}')
+
+  else:
+    n2 = number / factor
+    d2= denom / factor
+    print(f'This improper fraction can be reduced to {n2} / {d2}')
+
+    #calculate mixed number (with reduced values)
+    wholenum = n2 / d2
+    frac = n2 % d2
+    if frac == 0:
+      print(f'The whole number is {n2 / d2}')
+    else:
+      print(f'The mixed number is {n2 / d2} and {n2 % d2}')
